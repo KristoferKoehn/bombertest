@@ -11,9 +11,19 @@ config_version=5
 [application]
 
 config/name="bombertest"
-config/features=PackedStringArray("4.3", "Forward Plus")
+run/main_scene="res://Scenes/Main.tscn"
+config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
 
 project/assembly_name="bombertest"
+
+[editor]
+
+movie_writer/movie_file="C:/Users/Kristofer/Documents/GodotMovieSave/test.avi"
+
+[rendering]
+
+environment/volumetric_fog/volume_size=256
+environment/volumetric_fog/volume_depth=256
