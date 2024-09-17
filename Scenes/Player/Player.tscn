@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8aof8gemlw42"]
+
+[ext_resource type="Script" path="res://Scenes/Player/Player.cs" id="1_t8j1c"]
+[ext_resource type="PackedScene" uid="uid://d2icteoax3cw3" path="res://Scenes/Bombs/BasicBomb.tscn" id="2_0dowt"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2y23q"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_o82cc"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_t8j1c")
+BombScene = ExtResource("2_0dowt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_2y23q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_o82cc")

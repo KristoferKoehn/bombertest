@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cir2af438mfnj"]
+
+[ext_resource type="Script" path="res://Scenes/Menus/SceneSwitcher.cs" id="1_0ffdu"]
+
+[node name="SceneSwitcher" type="Node"]
+script = ExtResource("1_0ffdu")
