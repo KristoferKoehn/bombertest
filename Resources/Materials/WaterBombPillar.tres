@@ -16,6 +16,6 @@ noise = SubResource("FastNoiseLite_bkjhl")
 render_priority = 0
 shader = ExtResource("1_qvlgi")
 shader_parameter/ExplosionDirection = Vector2(1, 0.5)
-shader_parameter/ExplosionColor = Color(0, 0.690196, 1, 1)
+shader_parameter/ExplosionColor = Color(0, 0.588235, 1, 1)
 shader_parameter/ColorIntensity = 6.155
 shader_parameter/ExplosionNoise = SubResource("NoiseTexture2D_ki4dv")
