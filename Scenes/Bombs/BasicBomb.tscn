@@ -1,76 +1,70 @@
-[gd_scene load_steps=20 format=3 uid="uid://d2icteoax3cw3"]
+[gd_scene load_steps=25 format=3 uid="uid://d2icteoax3cw3"]
 
 [ext_resource type="Script" path="res://Scenes/Bombs/BasicBomb.cs" id="1_lxfrs"]
-[ext_resource type="Shader" path="res://Resources/Shaders/ShieldFresnel.gdshader" id="2_2o7fh"]
 [ext_resource type="Shader" path="res://Resources/Shaders/ExplosionShader.gdshader" id="3_i5dr7"]
+[ext_resource type="PackedScene" uid="uid://coo3q168ga5ii" path="res://Scenes/Particles/ExplosionParticles.tscn" id="3_qtm5a"]
+[ext_resource type="Material" uid="uid://dc2fnnky6orn1" path="res://Resources/Materials/WaterBombPillar.tres" id="3_we2qx"]
+[ext_resource type="Shader" path="res://Resources/Shaders/PillarCap.gdshader" id="4_ynrh7"]
+[ext_resource type="Texture2D" uid="uid://df4tl253kmab3" path="res://Assets/ParticleTextures/smoke_08.png" id="6_jfnh0"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fvtm5"]
-albedo_color = Color(0.211765, 0.239216, 0.290196, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fujik"]
+albedo_color = Color(0.187176, 0.187176, 0.187176, 1)
 
-[sub_resource type="SphereMesh" id="SphereMesh_tibgk"]
-material = SubResource("StandardMaterial3D_fvtm5")
+[sub_resource type="SphereMesh" id="SphereMesh_5y313"]
+material = SubResource("StandardMaterial3D_fujik")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_mnh2l"]
-noise_type = 5
-frequency = 0.0217
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_obsd5"]
+frequency = 0.0137
 fractal_type = 3
 fractal_octaves = 1
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0jouo"]
-noise = SubResource("FastNoiseLite_mnh2l")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l0dvl"]
+noise = SubResource("FastNoiseLite_obsd5")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xespi"]
-render_priority = 0
-shader = ExtResource("2_2o7fh")
-shader_parameter/NoiseDirection = Vector2(0.2, 0)
-shader_parameter/ShieldTexture = SubResource("NoiseTexture2D_0jouo")
-
-[sub_resource type="SphereMesh" id="SphereMesh_mba3w"]
-material = SubResource("ShaderMaterial_xespi")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_sc4vt"]
-frequency = 0.0156
-fractal_type = 3
-fractal_octaves = 1
-fractal_lacunarity = 1.0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_h53q4"]
-seamless = true
-noise = SubResource("FastNoiseLite_sc4vt")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qo47e"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pdwwj"]
 render_priority = 0
 shader = ExtResource("3_i5dr7")
-shader_parameter/ExplosionDirection = Vector2(1, 0.5)
-shader_parameter/ExplosionColor = Color(0, 0.690196, 1, 1)
-shader_parameter/ColorIntensity = 6.155
-shader_parameter/ExplosionNoise = SubResource("NoiseTexture2D_h53q4")
+shader_parameter/ExplosionDirection = Vector2(1.195, 0.6)
+shader_parameter/ExplosionColor = Color(0, 0.588235, 1, 1)
+shader_parameter/ColorIntensity = 7.055
+shader_parameter/ExplosionNoise = SubResource("NoiseTexture2D_l0dvl")
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_skal7"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_qo47e")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_mha2h"]
-frequency = 0.0156
-fractal_type = 3
-fractal_octaves = 1
-fractal_lacunarity = 1.0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ubwes"]
-seamless = true
-noise = SubResource("FastNoiseLite_mha2h")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nkamv"]
-render_priority = 0
-shader = ExtResource("3_i5dr7")
-shader_parameter/ExplosionDirection = Vector2(1, 0.5)
-shader_parameter/ExplosionColor = Color(0, 0.690196, 1, 1)
-shader_parameter/ColorIntensity = 6.155
-shader_parameter/ExplosionNoise = SubResource("NoiseTexture2D_ubwes")
+material = SubResource("ShaderMaterial_pdwwj")
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_w2pgq"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_nkamv")
+material = ExtResource("3_we2qx")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_83twt"]
+offset = Vector3(0, 236.36, 0)
+fractal_type = 2
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8je20"]
+noise = SubResource("FastNoiseLite_83twt")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lpuq4"]
+fractal_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a7gr6"]
+noise = SubResource("FastNoiseLite_lpuq4")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mo2uo"]
+render_priority = 0
+shader = ExtResource("4_ynrh7")
+shader_parameter/direction = Vector2(1.2, -2.195)
+shader_parameter/ColorIntensity = 0.965
+shader_parameter/color = Color(0, 0.588235, 1, 1)
+shader_parameter/noise = SubResource("NoiseTexture2D_a7gr6")
+shader_parameter/CutoffNoise = SubResource("NoiseTexture2D_8je20")
+
+[sub_resource type="SphereMesh" id="SphereMesh_cyj47"]
+material = SubResource("ShaderMaterial_mo2uo")
+radius = 0.6
+radial_segments = 16
+rings = 8
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_xm00b"]
 resource_local_to_scene = true
@@ -78,19 +72,37 @@ resource_local_to_scene = true
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2rd6r"]
 resource_local_to_scene = true
 
-[node name="BasicBomb" type="MeshInstance3D" node_paths=PackedStringArray("Fireball", "NorthPillar", "WestPillar", "Pillars", "NorthHitbox", "WestHitbox")]
-mesh = SubResource("SphereMesh_tibgk")
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3r5bh"]
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 6.0
+initial_velocity_max = 6.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vvrs1"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(2, 2, 2, 1)
+albedo_texture = ExtResource("6_jfnh0")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_7hxcx"]
+material = SubResource("StandardMaterial3D_vvrs1")
+
+[node name="BasicBomb" type="MeshInstance3D" node_paths=PackedStringArray("NorthPillar", "WestPillar", "NorthCap", "SouthCap", "EastCap", "WestCap", "Pillars", "Particles", "NorthHitbox", "WestHitbox")]
+mesh = SubResource("SphereMesh_5y313")
 script = ExtResource("1_lxfrs")
-Fireball = NodePath("Fireball")
 NorthPillar = NodePath("Pillars/NorthPillar")
 WestPillar = NodePath("Pillars/WestPillar")
+NorthCap = NodePath("Pillars/NorthCap")
+SouthCap = NodePath("Pillars/SouthCap")
+EastCap = NodePath("Pillars/EastCap")
+WestCap = NodePath("Pillars/WestCap")
 Pillars = NodePath("Pillars")
+Particles = NodePath("ExplosionParticles")
 NorthHitbox = NodePath("Hitboxes/NorthHitbox/CollisionShape3D")
 WestHitbox = NodePath("Hitboxes/WestHitbox/CollisionShape3D")
-
-[node name="Fireball" type="MeshInstance3D" parent="."]
-visible = false
-mesh = SubResource("SphereMesh_mba3w")
 
 [node name="Pillars" type="Node3D" parent="."]
 visible = false
@@ -102,6 +114,22 @@ mesh = SubResource("CylinderMesh_skal7")
 [node name="NorthPillar" type="MeshInstance3D" parent="Pillars"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("CylinderMesh_w2pgq")
+
+[node name="NorthCap" type="MeshInstance3D" parent="Pillars"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -1)
+mesh = SubResource("SphereMesh_cyj47")
+
+[node name="SouthCap" type="MeshInstance3D" parent="Pillars"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 1)
+mesh = SubResource("SphereMesh_cyj47")
+
+[node name="WestCap" type="MeshInstance3D" parent="Pillars"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1, 0, 0)
+mesh = SubResource("SphereMesh_cyj47")
+
+[node name="EastCap" type="MeshInstance3D" parent="Pillars"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1, 0, 0)
+mesh = SubResource("SphereMesh_cyj47")
 
 [node name="Hitboxes" type="Node3D" parent="."]
 
@@ -118,3 +146,16 @@ transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitboxes/WestHitbox"]
 shape = SubResource("CylinderShape3D_2rd6r")
 disabled = true
+
+[node name="ExplosionParticles" parent="." instance=ExtResource("3_qtm5a")]
+preprocess = 0.1
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 20
+one_shot = true
+preprocess = 0.2
+speed_scale = 1.2
+explosiveness = 0.8
+process_material = SubResource("ParticleProcessMaterial_3r5bh")
+draw_pass_1 = SubResource("QuadMesh_7hxcx")
