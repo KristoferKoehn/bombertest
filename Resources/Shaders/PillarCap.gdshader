@@ -7,8 +7,6 @@ uniform vec2 direction;
 uniform float ColorIntensity;
 uniform vec3 color : source_color;
 
-
-
 vec3 lerp(vec3 col1, vec3 col2, float val) {
 	vec3 ret = col1 + (col2 - col1) * val;
 	return ret;
@@ -27,13 +25,4 @@ void fragment() {
 	} else {
 		discard;
 	}
-	
-	
-	
-	// Called for every pixel the material is visible on.
 }
-
-//void light() {
-	// Called for every pixel for every light affecting the material.
-	// Uncomment to replace the default light processing function with this one.
-//}

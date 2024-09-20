@@ -22,6 +22,8 @@ public partial class BasicBomb : MeshInstance3D
     [Export] CollisionShape3D WestHitbox { get; set; }
 
     [Export] MeshInstance3D Player { get; set; }
+    [Export] StaticBody3D Box { get; set; }
+
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -49,7 +51,7 @@ public partial class BasicBomb : MeshInstance3D
 		GetTree().CreateTimer(0.9).Timeout += () => QueueFree();
 
 		
-		Pillars.Visible = true;
+		//Pillars.Visible = true;
 		NorthHitbox.Disabled = false; WestHitbox.Disabled = false;
 		Particles.Emitting = true;
 
@@ -98,9 +100,23 @@ public partial class BasicBomb : MeshInstance3D
 
     }
 
-	public void OnWestHitboxAreaEntered(Area3D meow)
+	public void OnHitboxBodyEntered(Node3D node)
 	{
-        GD.Print("meow");
+        Player p = node as Player;
+        if (p != null)
+        {
+            //this is player
+            //player dead
+            //p.Dead();
+        }
+
+        Box b = node as Box;
+        if (b != null)
+        {
+            //this is box
+            //box dead
+            b.Dead();
+        }
     }
 
     private void T_Finished()

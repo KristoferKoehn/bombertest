@@ -135,7 +135,6 @@ mesh = SubResource("SphereMesh_cyj47")
 
 [node name="NorthHitbox" type="Area3D" parent="Hitboxes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitboxes/NorthHitbox"]
 shape = SubResource("CylinderShape3D_xm00b")
@@ -160,5 +159,18 @@ speed_scale = 1.2
 explosiveness = 0.8
 process_material = SubResource("ParticleProcessMaterial_3r5bh")
 draw_pass_1 = SubResource("QuadMesh_7hxcx")
-[connection signal="area_entered" from="Hitboxes/WestHitbox" to="." method="OnWestHitboxAreaEntered"]
 
+[node name="RaycastNorth" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -1)
+
+[node name="RaycastSouth" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 1)
+
+[node name="RaycastWest" type="RayCast3D" parent="."]
+target_position = Vector3(-1, 0, 0)
+
+[node name="RaycastEast" type="RayCast3D" parent="."]
+target_position = Vector3(1, 0, 0)
+
+[connection signal="body_entered" from="Hitboxes/NorthHitbox" to="." method="OnHitboxBodyEntered"]
+[connection signal="body_entered" from="Hitboxes/WestHitbox" to="." method="OnHitboxBodyEntered"]
