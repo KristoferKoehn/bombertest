@@ -1,0 +1,202 @@
+[gd_scene load_steps=20 format=3 uid="uid://fmuig8yt3ha7"]
+
+[ext_resource type="ArrayMesh" uid="uid://oiq0komlgkjd" path="res://Assets/Meshes/CoinMesh.tres" id="1_j7naa"]
+[ext_resource type="Texture2D" uid="uid://b481aif6s4n5d" path="res://Assets/ParticleTextures/star_01.png" id="2_w27t1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kg7dl"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_rcf16"]
+sky_material = SubResource("ProceduralSkyMaterial_kg7dl")
+
+[sub_resource type="Environment" id="Environment_dci58"]
+background_mode = 2
+sky = SubResource("Sky_rcf16")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="Curve" id="Curve_hsvds"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 360), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2q3dw"]
+curve = SubResource("Curve_hsvds")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5t8k7"]
+angle_min = 1.07288e-05
+angle_max = 162.6
+angle_curve = SubResource("CurveTexture_2q3dw")
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 0.5
+initial_velocity_max = 0.5
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.23517e-06
+radial_accel_max = 0.999998
+tangential_accel_min = 0.999998
+tangential_accel_max = 0.999998
+sub_emitter_mode = 1
+sub_emitter_frequency = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ifug2"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 0, 1)
+albedo_texture = ExtResource("2_w27t1")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_6fiat"]
+material = SubResource("StandardMaterial3D_ifug2")
+size = Vector2(0.5, 0.5)
+
+[sub_resource type="Curve" id="Curve_7t85q"]
+min_value = -1.0
+_data = [Vector2(0, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fj3in"]
+curve = SubResource("Curve_7t85q")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jtdfm"]
+gravity = Vector3(0, 0, 0)
+color = Color(1, 1, 1, 0.117647)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+hue_variation_curve = SubResource("CurveTexture_fj3in")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_bwvqn"]
+load_path = "res://.godot/imported/star_01.png-517eb9f8a2a62e3ab9edd0375f050e40.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_knv76"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = SubResource("CompressedTexture2D_bwvqn")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_qpu2m"]
+material = SubResource("StandardMaterial3D_knv76")
+size = Vector2(0.5, 0.5)
+
+[sub_resource type="Animation" id="Animation_w2ojs"]
+resource_name = "CollectedAnimation"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Coin:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Coin:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GPUParticles3D:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_0ia8m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Coin:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Coin:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GPUParticles3D:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xb3yi"]
+_data = {
+"CollectedAnimation": SubResource("Animation_w2ojs"),
+"RESET": SubResource("Animation_0ia8m")
+}
+
+[node name="Coin" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_dci58")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0.452089, -0.464545, 0.761455, -0.213586, 0.77246, 0.598069, 0, 0, 0)
+shadow_enabled = true
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.881469, 0)
+emitting = false
+amount = 10
+sub_emitter = NodePath("../SubEmitter")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.9
+process_material = SubResource("ParticleProcessMaterial_5t8k7")
+draw_pass_1 = SubResource("QuadMesh_6fiat")
+
+[node name="SubEmitter" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.881469, 0)
+emitting = false
+amount = 30
+lifetime = 0.3
+process_material = SubResource("ParticleProcessMaterial_jtdfm")
+draw_pass_1 = SubResource("QuadMesh_qpu2m")
+
+[node name="Coin" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_j7naa")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xb3yi")
+}

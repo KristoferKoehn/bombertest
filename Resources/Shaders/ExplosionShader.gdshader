@@ -1,4 +1,5 @@
 shader_type spatial;
+render_mode shadows_disabled, unshaded;
 
 uniform sampler2D ExplosionNoise;
 uniform vec2 ExplosionDirection;
@@ -15,10 +16,14 @@ void vertex() {
 }
 
 void fragment() {
-	vec3 noiseData = texture(ExplosionNoise, UV + ExplosionDirection * TIME).xyz;
+	vec3 noiseData;
+	if (UV.y < 0.25) {
+		noiseData = texture(ExplosionNoise, UV + ExplosionDirection * TIME).xyz;
+	} else if (UV.y < 0.5) {
+		noiseData = texture(ExplosionNoise, UV - ExplosionDirection * TIME).xyz;
+	} else {
+		ALBEDO = vec3(1,1,1);
+	}
 	
-	//ALBEDO = ExplosionColor * noiseData;
-	ALBEDO = lerp(ExplosionColor, vec3(1,1,1), pow(noiseData.r, ColorIntensity));
-	//ALPHA = noiseData.r;
-	// Called for every pixel the material is visible on.
+	ALBEDO = lerp(ExplosionColor.xyz, vec3(1,1,1), pow(noiseData.r, ColorIntensity));
 }
