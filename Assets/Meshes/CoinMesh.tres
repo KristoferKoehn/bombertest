@@ -1,13 +1,101 @@
-[gd_resource type="ArrayMesh" load_steps=4 format=4 uid="uid://oiq0komlgkjd"]
+[gd_resource type="ArrayMesh" load_steps=5 format=4 uid="uid://oiq0komlgkjd"]
 
 [ext_resource type="Texture2D" uid="uid://lonesj5hwy0x" path="res://Assets/Prototype/prototypebits_texture.png" id="1_u1tth"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_32hvp"]
+[sub_resource type="Shader" id="Shader_81h8w"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.3.stable.mono's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
+
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
+uniform float point_size : hint_range(0.1, 128.0, 0.1);
+
+uniform float roughness : hint_range(0.0, 1.0);
+uniform sampler2D texture_metallic : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r, filter_linear_mipmap, repeat_enable;
+
+uniform float specular : hint_range(0.0, 1.0, 0.01);
+uniform float metallic : hint_range(0.0, 1.0, 0.01);
+
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+
+uniform float xrot;
+uniform float yrot;
+uniform float zrot;
+
+
+//rot == (phi, theta, psi)
+mat3 ProcessRotation(vec3 rot) {
+	float phi = rot.x;
+	float theta = rot.y;
+	float psi = rot.z;
+	mat3 PositionalMatrix;
+
+	PositionalMatrix[0][0] = cos(theta)*cos(psi);
+	PositionalMatrix[1][0] = cos(phi)*sin(psi) + sin(phi) * sin(theta) * cos(psi);
+	PositionalMatrix[2][0] = sin(phi) * sin(psi) - cos(phi)*sin(theta)*cos(psi);
+	PositionalMatrix[0][1] = -cos(theta)*sin(psi);
+	PositionalMatrix[1][1] = cos(phi)*cos(psi) - sin(phi) * sin(theta) * sin(psi);
+	PositionalMatrix[2][1] = sin(phi) * cos(psi) + cos(phi)*sin(theta)*sin(psi);
+	PositionalMatrix[0][2] = sin(theta);
+	PositionalMatrix[1][2] = -sin(phi)*cos(theta);
+	PositionalMatrix[2][2] = cos(phi)*cos(theta);
+	return PositionalMatrix;
+}
+
+
+void vertex() {
+	VERTEX = VERTEX * ProcessRotation(vec3(2.3 * TIME * xrot, 3.1 * TIME * yrot, 1.3 * TIME * zrot));
+	NORMAL = NORMAL * ProcessRotation(vec3(2.3 * TIME * xrot, 3.1 * TIME * yrot, 1.3 * TIME * zrot));
+	
+	UV = UV * uv1_scale.xy + uv1_offset.xy;
+	
+	
+}
+
+void fragment() {
+	
+	
+	vec2 base_uv = UV;
+
+	vec4 albedo_tex = texture(texture_albedo, base_uv);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+
+	float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	SPECULAR = specular;
+
+	vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
+	float roughness_tex = dot(texture(texture_roughness, base_uv), roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xf5bm"]
 resource_name = "prototype_texture"
-albedo_texture = ExtResource("1_u1tth")
-metallic = 1.0
-roughness = 0.4
-emission = Color(1, 0, 0, 1)
+render_priority = 0
+shader = SubResource("Shader_81h8w")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.0
+shader_parameter/metallic = 0.42
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/xrot = 0.0
+shader_parameter/yrot = 2.0
+shader_parameter/zrot = null
+shader_parameter/texture_albedo = ExtResource("1_u1tth")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_y8j31"]
 _surfaces = [{
@@ -33,7 +121,7 @@ _surfaces = [{
 "index_count": 708,
 "index_data": PackedByteArray("WwAHAF8AWwADAAcAEwAfABcAEwAbAB8AGwAnAB8AGwAjACcAIwAvACcAIwArAC8AKwA3AC8AKwAzADcAMwA/ADcAMwA7AD8AOwBHAD8AOwBDAEcAQwBPAEcAQwBLAE8ASwBXAE8ASwBTAFcAUwBfAFcAUwBbAF8ACwAXAA8ACwATABcAHQCvABUAHQCxAK8AAwAPAAcAAwALAA8AAgBhAAoAAgBjAGEADgBlAAYADgBnAGUACgBpABIACgBhAGkAFgBnAA4AFgBrAGcAEgBtABoAEgBpAG0AHgBrABYAHgBvAGsAGgBxACIAGgBtAHEAJgBvAB4AJgBzAG8AIgB1ACoAIgBxAHUALgBzACYALgB3AHMAKgB5ADIAKgB1AHkANgB3AC4ANgB7AHcAMgB9ADoAMgB5AH0APgB7ADYAPgB/AHsAOgCBAEIAOgB9AIEARgB/AD4ARgCDAH8AQgCFAEoAQgCBAIUATgCDAEYATgCHAIMASgCJAFIASgCFAIkAVgCHAE4AVgCLAIcAUgCNAFoAUgCJAI0AXgCLAFYAXgCPAIsAWgBjAAIAWgCNAGMABgCPAF4ABgBlAI8AMQChADkAMQCfAKEACABiAAAACABgAGIABABmAAwABABkAGYAEABgAAgAEABoAGAADABqABQADABmAGoAGABoABAAGABsAGgAFABuABwAFABqAG4AIABsABgAIABwAGwAHAByACQAHABuAHIAKABwACAAKAB0AHAAJAB2ACwAJAByAHYAMAB0ACgAMAB4AHQALAB6ADQALAB2AHoAOAB4ADAAOAB8AHgANAB+ADwANAB6AH4AQAB8ADgAQACAAHwAPACCAEQAPAB+AIIASACAAEAASACEAIAARACGAEwARACCAIYAUACEAEgAUACIAIQATACKAFQATACGAIoAWACIAFAAWACMAIgAVACOAFwAVACKAI4AAACMAFgAAABiAIwAXABkAAQAXACOAGQAUQCpAFkAUQCnAKkAPQC3ADUAPQC5ALcAGQCbACEAGQCZAJsAXQC/AFUAXQDBAL8AOQCjAEEAOQChAKMAJQCxAB0AJQCzALEAWQCVAAEAWQCpAJUAAQCSAAkAAQCVAJIARQC5AD0ARQC7ALkAIQCdACkAIQCbAJ0ABQDBAF0ABQCrAMEADQCrAAUADQCsAKsAQQClAEkAQQCjAKUALQCzACUALQC1ALMACQCXABEACQCSAJcATQC7AEUATQC9ALsAKQCfADEAKQCdAJ8AFQCsAA0AFQCvAKwASQCnAFEASQClAKcANQC1AC0ANQC3ALUAEQCZABkAEQCXAJkAVQC9AE0AVQC/AL0AkACTAJQAkACWAJMAkACYAJYAkACaAJgAkACcAJoAkACeAJwAkACgAJ4AkACiAKAAkACkAKIAkACmAKQAkACoAKYAkACUAKgAkQCqAK0AkQCtAK4AkQCuALAAkQCwALIAkQCyALQAkQC0ALYAkQC2ALgAkQC4ALoAkQC6ALwAkQC8AL4AkQC+AMAAkQDAAKoA6wDbAMsA6wD7ANsA4ADzANUA4AD8APMAAAHpAPkAAAHuAOkA8ADJAOUA8ADMAMkAwwD1AOMAwwDTAPUAwgDIAMQAygDPAM0A0gDWANQA2gDhAN0A4gDmAOQA6gDxAO0A8gD2APQA+gD/AP0A0gDyAPQA0gDUAPIA+gDhANoA+gD9AOEA1QDcAOAA1QDXANwAwwDYANMAwwDGANgA2wDRAMsA2wDfANEAxQDMAM4AxQDJAMwA4gDIAMIA4gDkAMgAygDxAOoAygDNAPEA5QDsAPAA5QDnAOwA9QDoAOMA9QD4AOgA/AD3APMA/AD+APcA6wABAfsA6wDvAAEB0ADZAMcA0ADeANkA"),
 "lods": [0.332108, PackedByteArray("BAEHABwBBAEKAQcAUwAEARwBCgEQAQYBUwBXABkBGAFTABkBGAEZARUBFAEYARUBFAEVAQ8BIwAUAQ8BCQEjAA8BDQExAR0BPQAxAQ0BHQExAT0AHQHAADEBHQEwAcAAuADAADABAgEeAQcBAgArAR4BGwErAQMBEgAeASEBCAEhAQsBUgCFACsBFwGFABoBIgAhASQBDAEkARIBQgB9AIUAMgAkAX0AEwF9ABYBDgFlAAUBBQFlAIsADgFzAGUABQGLAFYANgBzAA4BVgCLAIMANgB7AHMAVgCDAEYARgB7ADYARgCDAHsACABgAAAAAABgACoBCAAgAWAAAAAqAVAAMAAgAQgAUAAqASgBMAAjASABUAAoASYBMAAmASMBUAAmATAAXAAfASIBXAApAR8BXAAnASkBXAAiASQAPAAnAVwAJAAiASUBPAAlAScBJAAlATwAUQAvAQEAUQAuAS8BEQEuAVEAEQEtAS4BAQAvASwBpgAsAS8BpgCWACwBAQAsAQkACQAsAS0BCQCXADEAXQC5AKwAAAHpAPkAAAHuAOkA4gDkADIB4gDmAOQA6gAzAc0A6gDNADkB9AA1AdQA1AA6AfQA+gD9ADcB+gD/AP0A1QDcADwB1QDXANwAPAH3ANUAPAH+APcAOAE2AfUAOAHGADYB9QDoADgB9QD4AOgAOwE0AesAOwHfADQB6wABATsB6wDvAAEBxQDMAM4AxQDlAMwA5QDsAMwA5QDnAOwA0ADZAMcA0ADeANkA")],
-"material": SubResource("StandardMaterial3D_32hvp"),
+"material": SubResource("ShaderMaterial_xf5bm"),
 "name": "prototype_texture",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),

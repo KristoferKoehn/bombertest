@@ -33,9 +33,13 @@ environment = SubResource("Environment_jxi6b")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
+shadow_blur = 0.365
+directional_shadow_mode = 0
+directional_shadow_split_1 = 0.119
+directional_shadow_blend_splits = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.355, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.355, -1)
 mesh = SubResource("BoxMesh_tr2hf")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
