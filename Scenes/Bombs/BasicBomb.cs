@@ -13,6 +13,8 @@ public partial class BasicBomb : MeshInstance3D
 	[Export] CollisionShape3D NorthHitbox { get; set; }
     [Export] CollisionShape3D WestHitbox { get; set; }
 
+    [Export] MeshInstance3D Player { get; set; }
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
@@ -51,6 +53,11 @@ public partial class BasicBomb : MeshInstance3D
 
         Tween WestHitboxTween = GetTree().CreateTween();
         WestHitboxTween.TweenProperty(WestHitbox.Shape, "height", 8, 0.2);
+    }
+
+	public void OnWestHitboxAreaEntered(Area3D meow)
+	{
+        GD.Print("meow");
     }
 
     private void T_Finished()
